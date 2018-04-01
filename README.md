@@ -16,7 +16,7 @@ This can be caused by:
 * adapter sequences (aren't in the reference)
 * poor quality bases (mismatches only make the alignment score worse)
 * structural variation in your sample compared to the reference
-* reads overlapping the start and end of contigs (includign circular genomes)
+* reads overlapping the start and end of contigs (including circular genomes)
 
 Read aligners output a [SAM file](https://en.wikipedia.org/wiki/SAM_(file_format)).
 Column 6 in this format stores the 
@@ -81,6 +81,8 @@ Usage: samclip.pl --ref ref.fasta [--max=5] [-v/--invert] < in.sam > out.sam
 ## Usage
 ```
 % samclip --ref ref.fa < in.sam > out.sam
+
+% samclip --ref ref.fa in1.sam in2.sam > out.sam
 
 % samtools view in.bam | samclip --ref ref.fa | samtools sort > out.bam
 
