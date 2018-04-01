@@ -45,8 +45,8 @@ important given the lower coverage often observed at those locations.
 
 ## Installation
 
-`samclip` has no dependencies except [Perl 5](https://www.perl.org/). 
-It uses no non-core modules. Hooray!
+`samclip` has no dependencies except [Perl 5.10](https://www.perl.org/)
+or higher. It only uses core modules, so no CPAN needed.
 
 ### Direct script download
 ```
@@ -56,11 +56,11 @@ It uses no non-core modules. Hooray!
 ```
 ### Homebrew
 ```
-% brew install brewsci/bio/samclip
+% brew install brewsci/bio/samclip  # COMING SOON!
 ```
 ### Conda
 ```
-% conda install -c bioconda -c conda-forge samclip
+% conda install -c bioconda -c conda-forge samclip  # COMING SOON
 ```
 ### Github
 ```
