@@ -5,12 +5,6 @@ sudo: false
 perl:
     - "5.14"
 
-addons:
-    apt:
-        packages:
-            - samtools
-            - bwa
-    
 install:
     - "export PATH=$PWD:$PATH"
 
@@ -22,11 +16,13 @@ script:
     - "samclip --ref doesnotexist 2>&1 | grep ERROR"
     - "samclip --ref test.fna 2>&1 | grep ERROR"
     - "touch empty.fai"
-    - "wc -l test.sam | grep 245"
+    - "wc -l test.sam | grep 254"
     - "grep -c -E '[0-9]+S' test.sam"
     - "grep -c '>' test.fna | grep '^4$'"
     - "samclip --ref empty.fai 2>&1 | grep ERROR"
     - "samclip --ref empty.fai /dev/null 2>&1 | grep 'Found 0 seq'"
     - "samclip --ref test.fna /dev/null 2>&1 | grep 'Found 4 seq'"
     - "samclip --ref test.fna < test.sam 2>&1 > /dev/null | grep Done"
-    - "! samclip --max 0 --ref test.fna test.sam 2>&1 | grep -c -E '[0-9]+S'"
+    - "samclip --ref test.fna < test.sam 2>&1 > /dev/null | grep 'Header contained 5 lines'"
+    - "samclip --max 0 --ref test.fna test.sam 2>&1 > /dev/null | grep Done"
+"
