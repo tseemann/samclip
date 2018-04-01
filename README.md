@@ -72,13 +72,29 @@ or higher. It only uses core modules, so no CPAN needed.
 
 ```
 % ./samclip --version
-samclip 0.1.0
+samclip 0.2
 
 % ./samclip --help
-Usage: samclip.pl --ref ref.fasta [--max=5] [-v/--invert] < in.sam > out.sam
+SYNOPSIS
+  Filter SAM file for soft & hard clipped alignments
+AUTHOR
+  Torsten Seemann (@torstenseemann)
+USAGE
+  % samclip --ref ref.fa < in.sam > out.sam
+  % minimap2 ref.fa R1.fq R2.fq | samclip --ref ref.fa | samtools sort > out.bam
+OPTIONS
+  --help         This help
+  --version      Print version and exit
+  --ref FASTA    Reference genome - needs FASTA.fai index
+  --max NUM      Maximum clip length to allow (default=5)
+  --invert       Output rejected SAM lines and ignore good ones
+  --debug        Print verbose debug info to stderr
+  --progress N   Print progress every NUM records (default=100000,none=0)
+HOMEPAGE
+  https://github.com/tseemann/samclip
 ```
 
-## Usage
+## Examples
 ```
 % samclip --ref ref.fa < in.sam > out.sam
 
@@ -92,13 +108,14 @@ Usage: samclip.pl --ref ref.fasta [--max=5] [-v/--invert] < in.sam > out.sam
 ## Options
 
 * `--ref FILE` should be a FASTA file indexed with `samtools faidx FILE`
-* `--max INTEGER` is the maximum soft+hard clipping to allow. Set to 0 to allow none.
-* `-v` or `--invert` will output the records that would have clipped and discard the good ones
+* `--max INTEGER` is the maximum soft+hard clipping to allow, use 0 to reject all bar contig edges
+* `--invert` will output the records that would have clipped and discard the good ones
+* `--progress N` will print a progress message every N records it processes, use 0 to disable
 * `--debug` is verbose debugging information for testing purposes
 
 ## Issues
 
-Submit feedback to the [Issue Tracker](https://github.com/tseemann/samclip/issues).
+Submit feedback to the [Issue Tracker](https://github.com/tseemann/samclip/issues)
 
 ## License
 
