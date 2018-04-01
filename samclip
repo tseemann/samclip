@@ -11,7 +11,8 @@ use Data::Dumper;
 
 my $EXE = basename($0);
 my $VERSION = "0.1.0";
-my $AUTHOR = "Torsten Seemann";
+my $AUTHOR = 'Torsten Seemann (@torstenseemann)';
+my $HOMEPAGE = "https://github.com/tseemann/samclip";
 
 # SAM file TSV columns
 use constant {
@@ -31,15 +32,39 @@ my $invert = 0;
 my $debug  = 0;
 
 #----------------------------------------------------------------------
+sub usage {
+  my($exitcode) = @_;
+  $exitcode=0 if !defined($exitcode) or $exitcode eq 'help';
+  my $fh = $exitcode ? \*STDERR : \*STDOUT;
+  print $fh
+    "SYNOPSIS\n  Filter SAM file for soft & hard clipped alignments\n",
+    "AUTHOR\n  $AUTHOR\n",
+    "USAGE\n",
+    "  % samclip --ref ref.fa < in.sam > out.sam\n",
+    "  % minimap2 ref.fa R1.fq R2.fq | samclip --ref ref.fa | samtools sort > out.bam\n",
+    "OPTIONS\n",
+    "  --help        This help.\n",
+    "  --version     Print version and exit.\n",
+    "  --ref FASTA   Reference genome - needs FASTA.fai index.\n",
+    "  --invert      Output rejected SAM lines and ignore good ones.\n",
+    "  --debug       Print verbose debug info to stderr.\n",
+    "HOMEPAGE\n  $HOMEPAGE\n",
+    "";
+  exit($exitcode);
+}
+
+#----------------------------------------------------------------------
 # getopts
 
+@ARGV or usage(1);
+
 GetOptions(
-  "help"      => \&usage,
-  "V|version" => \&version,
-  "ref=s"     => \$ref,
-  "max=i"     => \$max,
-  "v|invert"  => \$invert,
-  "debug"     => \$debug,
+  "help"       => \&usage,
+  "version"    => \&version,
+  "ref=s"      => \$ref,
+  "max=i"      => \$max,
+  "v"          => \$invert,
+  "debug"      => \$debug,
 ) or usage(1);
              
 $ref or err("Please supply reference genome with --ref");
@@ -106,14 +131,6 @@ sub fai_to_dict {
   return $len;
 }
 
-#----------------------------------------------------------------------
-sub usage {
-  my($exitcode) = @_;
-  $exitcode=0 if !defined($exitcode) or $exitcode eq 'help';
-  my $fh = $exitcode ? \*STDERR : \*STDOUT;
-  print $fh "Usage: $EXE --ref ref.fasta [--max=$max] [-v/--invert] < in.sam > out.sam\n";
-  exit($exitcode);
-}
 
 #----------------------------------------------------------------------
 sub version {
