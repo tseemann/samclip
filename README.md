@@ -7,6 +7,7 @@ Filter SAM file for soft and hard clipped alignments
 TODO: description of the problem
 
 ## Install
+`samclip` has no dependencies except Perl 5.  It uses no non-core modules.
 ```
 % wget https://raw.githubusercontent.com/tseemann/samclip/master/samclip
 
@@ -28,6 +29,17 @@ Usage: samclip.pl --ref ref.fasta [--max=5] [-v/--invert] < in.sam > out.sam
 % bwa mem ref.fa R1.fq R2.fq | samclip --ref ref.fa | samtools sort > out.bam 
 ```
 
+## Options
+
+TODO: explain these options
+
+* `--ref FILE`
+* `--max INTEGER`
+
+## Issues
+
+Post to https://github.com/tseemann/samclip/issues
+
 ## License
 
 GPLv3
@@ -35,3 +47,4 @@ GPLv3
 ## Author
 
 Torsten Seemann
+
