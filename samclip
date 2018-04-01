@@ -86,9 +86,16 @@ msg("Found", scalar keys %$len, "sequences in $ref");
 my $total=0;
 my $removed=0;
 my $kept=0;
+my $header=0;
 
 # read SAM one line ar a time
 while (my $line = <ARGV>) {
+  # SAM header
+  if ($line =~ m/^@/) {
+    print $line;
+    $header++;
+    next;
+  }
   $total++;
   my @sam = split m/\t/, $line;
   # do a quick 'clipped?' check before heavyweight parsing
@@ -116,7 +123,9 @@ while (my $line = <ARGV>) {
   print $line unless $invert;
 }
 # stats
-msg("Read $total, removed $removed, allowed $kept, passed", $total-$removed);
+msg("Total SAM records $total, removed $removed, allowed $kept, passed", $total-$removed);
+msg("Header contained $header lines");
+msg("Done.");
 
 #----------------------------------------------------------------------
 sub fai_to_dict {
