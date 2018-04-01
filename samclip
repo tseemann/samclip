@@ -10,7 +10,7 @@ use Data::Dumper;
 # globals
 
 my $EXE = basename($0);
-my $VERSION = "0.1.0";
+my $VERSION = "0.2";
 my $AUTHOR = 'Torsten Seemann (@torstenseemann)';
 my $HOMEPAGE = "https://github.com/tseemann/samclip";
 
