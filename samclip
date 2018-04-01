@@ -63,7 +63,7 @@ GetOptions(
   "version"    => \&version,
   "ref=s"      => \$ref,
   "max=i"      => \$max,
-  "v"          => \$invert,
+  "invert"     => \$invert,
   "debug"      => \$debug,
 ) or usage(1);
              

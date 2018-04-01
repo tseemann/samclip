@@ -25,3 +25,4 @@ script:
     - "samclip --ref test.fna < test.sam 2>&1 > /dev/null | grep Done"
     - "samclip --ref test.fna < test.sam 2>&1 > /dev/null | grep 'Header contained 5 lines'"
     - "samclip --max 0 --ref test.fna test.sam 2>&1 > /dev/null | grep Done"
+    - "samclip --invert --ref test.fna test.sam 2>&1 > /dev/null | grep Done"
