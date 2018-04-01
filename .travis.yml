@@ -26,3 +26,4 @@ script:
     - "samclip --ref test.fna < test.sam 2>&1 > /dev/null | grep 'Header contained 5 lines'"
     - "samclip --max 0 --ref test.fna test.sam 2>&1 > /dev/null | grep Done"
     - "samclip --invert --ref test.fna test.sam 2>&1 > /dev/null | grep Done"
+    - "samclip --progress 50 --ref test.fna test.sam 2>&1 > /dev/null | grep 'Processed 150 records'"
