@@ -108,10 +108,11 @@ sub fai_to_dict {
 
 #----------------------------------------------------------------------
 sub usage {
-  my $errcode = @_;
-  my $fh = $errcode ? \*STDERR : \*STDOUT;
+  my($exitcode) = @_;
+  $exitcode=0 if !defined($exitcode) or $exitcode eq 'help';
+  my $fh = $exitcode ? \*STDERR : \*STDOUT;
   print $fh "Usage: $EXE --ref ref.fasta [--max=$max] [-v/--invert] < in.sam > out.sam\n";
-  exit($errcode);
+  exit($exitcode);
 }
 
 #----------------------------------------------------------------------
