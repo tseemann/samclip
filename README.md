@@ -60,7 +60,7 @@ or higher. It only uses core modules, so no CPAN needed.
 ```
 ### Conda
 ```
-% conda install -c bioconda -c conda-forge samclip  # COMING SOON
+% conda install -c bioconda -c conda-forge samclip
 ```
 ### Github
 ```
