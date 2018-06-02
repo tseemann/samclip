@@ -56,7 +56,7 @@ or higher. It only uses core modules, so no CPAN needed.
 ```
 ### Homebrew
 ```
-% brew install brewsci/bio/samclip  # COMING SOON!
+% brew install brewsci/bio/samclip
 ```
 ### Conda
 ```
