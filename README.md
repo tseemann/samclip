@@ -100,7 +100,8 @@ HOMEPAGE
 
 % samclip --ref ref.fa in1.sam in2.sam > out.sam
 
-% samtools view in.bam | samclip --ref ref.fa | samtools sort > out.bam
+# the -h is to emsure the SAM header is included
+% samtools view -h in.bam | samclip --ref ref.fa | samtools sort > out.bam
 
 % bwa mem ref.fa R1.fq R2.fq | samclip --ref ref.fa | samtools sort > out.bam 
 ```
