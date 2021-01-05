@@ -99,6 +99,7 @@ msg("Found", scalar keys %$len, "sequences in $ref");
 
 my $total=0;
 my $removed=0;
+my $unaligned_removed=0;
 my $kept=0;
 my $header=0;
 
@@ -138,10 +139,15 @@ while (my $line = <ARGV>) {
     print $line if $invert;
     $kept++;
   }
+  elsif($sam[SAM_CIGAR] eq '*'){
+    $unaligned_removed++;
+    $removed++;
+    next;
+  }
   print $line unless $invert;
 }
 # stats
-msg("Total SAM records $total, removed $removed, allowed $kept, passed", $total-$removed);
+msg("Total SAM records $total, removed $removed (contain unaligned $unaligned_removed), allowed $kept, passed", $total-$removed);
 msg("Header contained $header lines");
 msg("Done.");
 
