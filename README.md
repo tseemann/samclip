@@ -113,6 +113,7 @@ HOMEPAGE
 * `--max INTEGER` is the maximum soft+hard clipping to allow, use 0 to reject all bar contig edges
 * `--invert` will output the records that would have clipped and discard the good ones
 * `--progress N` will print a progress message every N records it processes, use 0 to disable
+* `--unalign` is a switch to delete unaligned data, use 1 to open and 0 to close
 * `--debug` is verbose debugging information for testing purposes
 
 ## Issues
