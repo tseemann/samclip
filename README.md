@@ -72,7 +72,7 @@ or higher. It only uses core modules, so no CPAN needed.
 
 ```
 % ./samclip --version
-samclip 0.2
+samclip 0.4
 
 % ./samclip --help
 SYNOPSIS
@@ -90,6 +90,7 @@ OPTIONS
   --invert       Output rejected SAM lines and ignore good ones
   --debug        Print verbose debug info to stderr
   --progress N   Print progress every NUM records (default=100000,none=0)
+  --unalign      Delete the data that are not aligned to reference (default=1)
 HOMEPAGE
   https://github.com/tseemann/samclip
 ```
@@ -112,6 +113,7 @@ HOMEPAGE
 * `--max INTEGER` is the maximum soft+hard clipping to allow, use 0 to reject all bar contig edges
 * `--invert` will output the records that would have clipped and discard the good ones
 * `--progress N` will print a progress message every N records it processes, use 0 to disable
+* `--unalign` is a switch to delete unaligned data, use 1 to open and 0 to close
 * `--debug` is verbose debugging information for testing purposes
 
 ## Issues
