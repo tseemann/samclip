@@ -41,6 +41,7 @@ my $ref      = '';
 my $invert   = 0;
 my $debug    = 0;
 my $progress = 100_000;
+my $unalign  = 1;
 
 #----------------------------------------------------------------------
 sub usage {
@@ -61,6 +62,7 @@ sub usage {
     "  --invert       Output rejected SAM lines and ignore good ones\n",
     "  --debug        Print verbose debug info to stderr\n",
     "  --progress N   Print progress every NUM records (default=$progress,none=0)\n",
+    "  --unalign      Delete the data that are not aligned to reference (default=1,don't=0)\n",
     "HOMEPAGE\n  $HOMEPAGE\n",
     "";
   exit($exitcode);
@@ -79,11 +81,13 @@ GetOptions(
   "invert"     => \$invert,
   "debug"      => \$debug,
   "progress=i" => \$progress,
+  "unalign=i"    => \$unalign,
 ) or usage(1);
              
 $ref or err("Please supply reference genome with --ref");
 $max >= 0 or err("Please supply --max >= 0");  
 $ref .= ".fai" unless $ref =~ m/\.fai$/;
+($unalign==0 or $unalign==1) or err("unalign must be in [0,1]");
 -r $ref or err("Can't see '$ref' index. Run 'samtools faidx $ref' ?"); 
 !@ARGV and -t STDIN and err("Please provide or pipe a SAM file to $EXE");
 
@@ -139,7 +143,7 @@ while (my $line = <ARGV>) {
     print $line if $invert;
     $kept++;
   }
-  elsif($sam[SAM_CIGAR] eq '*'){
+  elsif($sam[SAM_CIGAR] eq '*' and $unalign){
     $unaligned_removed++;
     $removed++;
     next;

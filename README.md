@@ -72,7 +72,7 @@ or higher. It only uses core modules, so no CPAN needed.
 
 ```
 % ./samclip --version
-samclip 0.2
+samclip 0.4
 
 % ./samclip --help
 SYNOPSIS
@@ -90,6 +90,7 @@ OPTIONS
   --invert       Output rejected SAM lines and ignore good ones
   --debug        Print verbose debug info to stderr
   --progress N   Print progress every NUM records (default=100000,none=0)
+  --unalign      Delete the data that are not aligned to reference (default=1)
 HOMEPAGE
   https://github.com/tseemann/samclip
 ```
