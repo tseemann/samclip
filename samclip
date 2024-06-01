@@ -192,8 +192,6 @@ sub clip{
   # update the position of the mapping according to how much we clipped from the left
   $sam[SAM_POS] += $SL;
 
-  # What to do with hard clips? Just remove them from cigar string?
-
   return  \@sam;
 }
 
