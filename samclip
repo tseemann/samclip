@@ -31,6 +31,7 @@ use constant {
   SAM_CIGAR => 5,
   SAM_TLEN  => 8,
   SAM_SEQ   => 9,
+  SAM_QUAL  => 10,
 };
 
 #----------------------------------------------------------------------
@@ -41,6 +42,7 @@ my $ref      = '';
 my $invert   = 0;
 my $debug    = 0;
 my $progress = 100_000;
+my $clip     = 0;
 
 #----------------------------------------------------------------------
 sub usage {
@@ -57,7 +59,8 @@ sub usage {
     "  --help         This help\n",
     "  --version      Print version and exit\n",
     "  --ref FASTA    Reference genome - needs FASTA.fai index\n",
-    "  --max NUM      Maximum clip length to allow (default=$max)\n",
+    "  --clip         Clip any soft ends; convert to hard clip\n",
+    "  --max NUM      Maximum clip length to allow before filtering (default=$max)\n",
     "  --invert       Output rejected SAM lines and ignore good ones\n",
     "  --debug        Print verbose debug info to stderr\n",
     "  --progress N   Print progress every NUM records (default=$progress,none=0)\n",
@@ -75,6 +78,7 @@ GetOptions(
   "help"       => \&usage,
   "version"    => \&version,
   "ref=s"      => \$ref,
+  "clip"       => \$clip,
   "max=i"      => \$max,
   "invert"     => \$invert,
   "debug"      => \$debug,
@@ -128,6 +132,11 @@ while (my $line = <ARGV>) {
     $L = 0 if $start <= 1+$L;
     $R = 0 if $end >= $contiglen-$R;
     my $info = $debug ? "CHROM=$sam[SAM_RNAME]:1..$contiglen POS=$start..$end CIGAR=$sam[SAM_CIGAR] L=$L R=$R | HL=$HL SL=$SL SR=$SR HR=$HR max=$max)" : "need --debug";
+    if($clip){
+      my $samArr = clip(\@sam, $HL, $SL, $SR, $HR);
+      @sam = @$samArr;
+      $line = join("\t", @sam);
+    }
     if ($L > $max or $R > $max) {
       msg("BAD! $info") if $debug;
       $removed++;
@@ -144,6 +153,49 @@ while (my $line = <ARGV>) {
 msg("Total SAM records $total, removed $removed, allowed $kept, passed", $total-$removed);
 msg("Header contained $header lines");
 msg("Done.");
+
+sub clip{
+  my($samArr, $HL, $SL, $SR, $HR) = @_;
+
+  # Avoid modifying the original array
+  my @sam = @$samArr;
+
+  # Trim the sequence and qual according to soft clips
+  $sam[SAM_SEQ]  = substr($sam[SAM_SEQ],  $SL, length($sam[SAM_SEQ])-$SL-$SR);
+  $sam[SAM_QUAL] = substr($sam[SAM_QUAL], $SL, length($sam[SAM_QUAL])-$SL-$SR);
+
+  # update the cigar line: we have now hard clipped the ends
+  my @cigar;
+  while($sam[SAM_CIGAR] =~ /(\d+)([MIDNSHP=X])/g){
+    my($len, $op) = ($1, $2);
+    if($op eq 'S'){
+      $op = 'H';
+    }
+    push @cigar, [$len, $op];
+  }
+  # Merge neighboring hard clips
+  for(my $i=0; $i<@cigar; $i++){
+    if($cigar[$i][1] eq 'H' and $i+1 < @cigar and $cigar[$i+1][1] eq 'H'){
+      $cigar[$i][0] += $cigar[$i+1][0];
+      splice(@cigar, $i+1, 1);
+      $i--;
+    }
+  }
+  # Recreate the cigar string
+  $sam[SAM_CIGAR] = '';
+  for(@cigar){
+    my $op  = $$_[1];
+    my $len = $$_[0];
+    $sam[SAM_CIGAR] .= $len.$op;
+  }
+
+  # update the position of the mapping according to how much we clipped from the left
+  $sam[SAM_POS] += $SL;
+
+  # What to do with hard clips? Just remove them from cigar string?
+
+  return  \@sam;
+}
 
 #----------------------------------------------------------------------
 sub fai_to_dict {
