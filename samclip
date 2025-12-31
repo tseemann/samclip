@@ -79,7 +79,7 @@ GetOptions(
   "invert"     => \$invert,
   "debug"      => \$debug,
   "progress=i" => \$progress,
-) or usage(1);
+) or exit(-1);
              
 $ref or err("Please supply reference genome with --ref");
 $max >= 0 or err("Please supply --max >= 0");  

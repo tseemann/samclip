@@ -1,0 +1,7 @@
+channels:
+  - conda-forge
+  - bioconda
+dependencies:
+  - perl >=5.18.0
+  - zlib
+  - bats-core
