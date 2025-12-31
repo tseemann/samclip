@@ -52,31 +52,27 @@ important given the lower coverage often observed at those locations.
 `samclip` has no dependencies except [Perl 5.10](https://www.perl.org/)
 or higher. It only uses core modules, so no CPAN needed.
 
-### Direct script download
-```
-% cd /usr/local/bin  # choose a folder in your $PATH
-% wget https://raw.githubusercontent.com/tseemann/samclip/master/samclip
-% chmod +x samclip
-```
-### Homebrew
-```
-% brew install brewsci/bio/samclip
-```
 ### Conda
 ```
-% conda install -c bioconda -c conda-forge samclip
+% conda install -c bioconda samclip
+```
+### Direct script download
+```
+% cd $HOME/.local/bim # choose a folder in your $PATH
+% wget https://raw.githubusercontent.com/tseemann/samclip/master/samclip
+% chmod +x samclip
 ```
 ### Github
 ```
 % git clone https://github.com/tseemann/samclip.git
-% cp samclip/samclip /usr/local/bin # choose a folder in your $PATH
+% cp samclip/samclip $HOME/.local/bin # choose a folder in your $PATH
 ```
 
 ## Test Installation
 
 ```
 % ./samclip --version
-samclip 0.2
+samclip 0.4.1
 
 % ./samclip --help
 SYNOPSIS
